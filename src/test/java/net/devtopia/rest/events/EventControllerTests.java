@@ -1,6 +1,7 @@
 package net.devtopia.rest.events;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -35,6 +36,7 @@ public class EventControllerTests {
     @Test
     public void createEvent() throws Exception {
         Event event = Event.builder()
+                .id(10)
                 .name("Inflearn Spring REST API")
                 .description("REST API development with Spring")
                 .beginEnrollmentDateTime(LocalDateTime.of(2018, 11, 23, 14, 21))
@@ -45,9 +47,9 @@ public class EventControllerTests {
                 .maxPrice(200)
                 .limitOfEnrollment(100)
                 .location("강남역 블라블라..")
+                .free(true)
+                .offline(false)
                 .build();
-
-        event.setId(10);
 
         Mockito.when(eventRepository.save(event)).thenReturn(event);
 
@@ -59,6 +61,10 @@ public class EventControllerTests {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("id").exists())
                 .andExpect(header().exists(HttpHeaders.LOCATION))
-                .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_UTF8_VALUE));
+                .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("id").value(Matchers.not(10)))
+                .andExpect(jsonPath("free").value(Matchers.not(true)))
+
+        ;
     }
 }
