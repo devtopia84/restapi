@@ -65,7 +65,7 @@ public class EventControllerTests {
     }
 
     @Test
-    public void createEvent_BadRequest() throws Exception {
+    public void createEvent_Bad_Request() throws Exception {
         Event event = Event.builder()
                 .id(10)
                 .name("Inflearn Spring REST API")
@@ -88,6 +88,20 @@ public class EventControllerTests {
                 .accept(MediaTypes.HAL_JSON)
                 .content(objectMapper.writeValueAsString(event)))
                 .andDo(print())
+                .andExpect(status().isBadRequest())
+
+        ;
+    }
+
+    @Test
+    public void createEvent_Bad_Request_Empty_Input() throws Exception {
+        EventDto event = EventDto.builder()
+                .build();
+
+        mockMvc.perform(post("/api/events/")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaTypes.HAL_JSON)
+                .content(objectMapper.writeValueAsString(event)))
                 .andExpect(status().isBadRequest())
 
         ;
