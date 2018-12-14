@@ -37,7 +37,7 @@ public class EventControllerTests {
     @Test
     @TestDescription("정상적으로 이벤트를 생성하는 테스트")
     public void createEvent() throws Exception {
-        EventDto event = EventDto.builder()
+        EventDto eventDto = EventDto.builder()
                 .name("Inflearn Spring REST API")
                 .description("REST API development with Spring")
                 .beginEnrollmentDateTime(LocalDateTime.of(2018, 11, 23, 14, 21))
@@ -53,7 +53,7 @@ public class EventControllerTests {
         mockMvc.perform(post("/api/events/")
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .accept(MediaTypes.HAL_JSON)
-                    .content(objectMapper.writeValueAsString(event)))
+                    .content(objectMapper.writeValueAsString(eventDto)))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("id").exists())
@@ -99,13 +99,13 @@ public class EventControllerTests {
     @Test
     @TestDescription("입력 값이 비어 있는 경우 에러가 발생하는 테스트")
     public void createEvent_Bad_Request_Empty_Input() throws Exception {
-        EventDto event = EventDto.builder()
+        EventDto eventDto = EventDto.builder()
                 .build();
 
         mockMvc.perform(post("/api/events/")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .accept(MediaTypes.HAL_JSON)
-                .content(objectMapper.writeValueAsString(event)))
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .accept(MediaTypes.HAL_JSON)
+                    .content(objectMapper.writeValueAsString(eventDto)))
                 .andExpect(status().isBadRequest())
 
         ;
@@ -114,7 +114,7 @@ public class EventControllerTests {
     @Test
     @TestDescription("입력 값이 잘못 경우 에러가 발생하는 테스트")
     public void createEvent_Bad_Request_Wrong_Input() throws Exception {
-        EventDto event = EventDto.builder()
+        EventDto eventDto = EventDto.builder()
                 .name("Inflearn Spring REST API")
                 .description("REST API development with Spring")
                 .beginEnrollmentDateTime(LocalDateTime.of(2018, 11, 26, 14, 21))
@@ -128,14 +128,15 @@ public class EventControllerTests {
                 .build();
 
         mockMvc.perform(post("/api/events/")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-//                .accept(MediaTypes.HAL_JSON)
-                .content(objectMapper.writeValueAsString(event)))
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .accept(MediaTypes.HAL_JSON)
+                    .content(objectMapper.writeValueAsString(eventDto)))
+                .andDo(print())
                 .andExpect(status().isBadRequest())
-//                .andExpect(jsonPath("$[0].objectName").exists())
+                .andExpect(jsonPath("$[0].objectName").exists())
 //                .andExpect(jsonPath("$[0].field").exists())
-//                .andExpect(jsonPath("$[0].defaultMessage").exists())
-//                .andExpect(jsonPath("$[0].code").exists())
+                .andExpect(jsonPath("$[0].defaultMassage").exists())
+                .andExpect(jsonPath("$[0].code").exists())
 //                .andExpect(jsonPath("$[0].rejectedValue").exists())
 
         ;
