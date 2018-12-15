@@ -1,6 +1,7 @@
 package net.devtopia.rest.events;
 
 import lombok.*;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -31,4 +32,11 @@ public class Event {
 
     @Enumerated(EnumType.STRING)
     private EventStatus eventStatus = EventStatus.DRAFT;
+
+    public void update() {
+
+        this.free = this.basePrice == 0 && this.maxPrice == 0;
+
+        this.offline = !StringUtils.isEmpty(this.location);
+    }
 }
