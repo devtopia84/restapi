@@ -75,7 +75,7 @@ public class EventTest {
         return new Object [] {
                 new Object[] {"강남역", true},
                 new Object[] {"", false},
-                new Object[] {"", false},
+//                new Object[] {"", false},
                 new Object[] {null, false}
         };
     }
