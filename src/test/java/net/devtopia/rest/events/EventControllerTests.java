@@ -227,11 +227,12 @@ public class EventControllerTests {
                     .content(objectMapper.writeValueAsString(eventDto)))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$[0].objectName").exists())
-//                .andExpect(jsonPath("$[0].field").exists())
-                .andExpect(jsonPath("$[0].defaultMassage").exists())
-                .andExpect(jsonPath("$[0].code").exists())
-//                .andExpect(jsonPath("$[0].rejectedValue").exists())
+                .andExpect(jsonPath("content[0].objectName").exists())
+//                .andExpect(jsonPath("content[0].field").exists())
+                .andExpect(jsonPath("content[0].defaultMassage").exists())
+                .andExpect(jsonPath("content[0].code").exists())
+//                .andExpect(jsonPath("content[0].rejectedValue").exists())
+                .andExpect(jsonPath("_links.index").exists())
 
         ;
     }
