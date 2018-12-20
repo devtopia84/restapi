@@ -248,7 +248,7 @@ public class EventControllerTests {
         // Given
         IntStream.range(0, 30).forEach(this::generateEvent);
 
-        // When
+        // When & than
         mockMvc.perform(get("/api/events/")
                     .param("page", "1")
                     .param("size", "10")
@@ -264,12 +264,45 @@ public class EventControllerTests {
         ;
     }
 
-    private void generateEvent(int index) {
+    @Test
+    @TestDescription("기존 이벤트를 하나 조회하기")
+    public void queryEvent() throws Exception {
+        // Given
+        Event event = this.generateEvent(100);
+
+        // When & than
+        mockMvc.perform(get("/api/events/{id}", event.getId()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").exists())
+                .andExpect(jsonPath("name").exists())
+                .andExpect(jsonPath("_links.self").exists())
+                .andExpect(jsonPath("_links.profile").exists())
+                .andDo(document("get-an-event"))
+        ;
+    }
+
+    @Test
+    @TestDescription("없는 이벤트를 조회했을  404 응답받기")
+    public void queryEvent_return404() throws Exception {
+        // When & than
+        mockMvc.perform(get("/api/events/2323"))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+//                .andExpect(jsonPath("id").exists())
+//                .andExpect(jsonPath("name").exists())
+//                .andExpect(jsonPath("_links.self").exists())
+//                .andExpect(jsonPath("_links.profile").exists())
+//                .andDo(document("query-event"))
+        ;
+    }
+
+    private Event generateEvent(int index) {
         Event event = Event.builder()
                 .name("Event " + index)
                 .description("Test event ")
                 .build();
 
-        this.eventRepository.save(event);
+        return this.eventRepository.save(event);
     }
 }
