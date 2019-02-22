@@ -1,6 +1,7 @@
 package net.devtopia.rest.events;
 
 import lombok.*;
+import net.devtopia.rest.accounts.Account;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
@@ -32,6 +33,9 @@ public class Event {
 
     @Enumerated(EnumType.STRING)
     private EventStatus eventStatus = EventStatus.DRAFT;
+
+    @ManyToOne
+    private Account manager;
 
     public void update() {
 
