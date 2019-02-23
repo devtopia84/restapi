@@ -1,6 +1,7 @@
 package net.devtopia.rest.events;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.devtopia.rest.common.BaseControllerTest;
 import net.devtopia.rest.common.RestDocsConfiguration;
 import net.devtopia.rest.common.TestDescription;
 import org.hamcrest.Matchers;
@@ -31,19 +32,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@AutoConfigureMockMvc
-@AutoConfigureRestDocs
-@Import(RestDocsConfiguration.class)
-@ActiveProfiles("test")
-public class EventControllerTests {
-
-    @Autowired
-    MockMvc mockMvc;
-
-    @Autowired
-    ObjectMapper objectMapper;
+public class EventControllerTests extends BaseControllerTest {
 
     @Autowired
     EventRepository eventRepository;
