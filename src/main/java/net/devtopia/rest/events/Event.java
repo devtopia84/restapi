@@ -1,7 +1,9 @@
 package net.devtopia.rest.events;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 import net.devtopia.rest.accounts.Account;
+import net.devtopia.rest.accounts.AccountSerializer;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
@@ -35,6 +37,7 @@ public class Event {
     private EventStatus eventStatus = EventStatus.DRAFT;
 
     @ManyToOne
+    @JsonSerialize(using = AccountSerializer.class)
     private Account manager;
 
     public void update() {
